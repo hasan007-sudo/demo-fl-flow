@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Users\\hp\\Documents\\GitHub\" /b)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npx:*)",
+      "Bash(npm install:*)",
+      "Bash(dir /s /b *.ts)",
+      "Bash(test:*)",
+      "Bash(dir \"C:\\Users\\hp\\Documents\\GitHub\" /b /s)",
+      "Bash(findstr:*)",
+      "Bash(dir \"C:\\Users\\hp\\Documents\\GitHub\\demo-fl-flow\\learning-forever-nextjs\\components\\ui\")",
+      "Bash(npm run build:*)",
+      "WebFetch(domain:docs.livekit.io)",
+      "WebSearch",
+      "Bash(dir \"C:\\Users\\hp\\Documents\\GitHub\\demo-fl-flow\\learning-forever-nextjs\" /b)",
+      "Bash(dir:*)",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

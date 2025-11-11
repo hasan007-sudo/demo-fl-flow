@@ -1,0 +1,198 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TutorProfile {
+  id                String   @id @default(cuid())
+  name              String
+  avatar            String?
+  gender            String
+  primaryStyles     Json     // Array of personality styles
+  speakingSpeeds    Json     // Array of speaking speeds
+  specialtyInterests Json    // Array of specialty interests
+  description       String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  sessions          Session[]
+  surveys           SessionSurvey[]
+
+  @@index([gender])
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String?
+  email       String?
+  whatsapp    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  englishTutorResponses     EnglishTutorQnResponses[]
+  interviewPreparerResponses InterviewPreparerQnResponses[]
+  sessions    Session[]
+  waitlists   Waitlist[]
+
+  @@index([email])
+  @@index([whatsapp])
+}
+
+model EnglishTutorQnResponses {
+  id                    String   @id @default(cuid())
+  userId                String
+  proficiencyLevel      String
+  genderPreference      String
+  speakingSpeed         String
+  learningGoals         Json
+  comfortableLanguage   String
+  tutorStyles           Json
+  correctionPreference  String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions              Session[]
+
+  @@index([userId])
+}
+
+model InterviewPreparerQnResponses {
+  id                    String   @id @default(cuid())
+  userId                String
+  interviewType         String   // behavioral, technical, case_study, mixed
+  jobRole               String   // e.g., "Senior Software Engineer"
+  experienceLevel       String   // entry, mid, senior, lead
+  genderPreference      String   @default("no_preference") // male, female, no_preference
+  targetIndustry        String   // Tech, Finance, Healthcare, etc.
+  companySize           String   // startup, mid-size, enterprise
+  interviewFormat       String   // remote, in-person, hybrid
+  preparationLevel      String   // first_timer, some_experience, veteran
+  focusAreas            Json     // Array of specific areas to focus on
+  weakPoints            Json     // Areas needing improvement
+  practiceGoals         Json     // Specific skills to practice
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions              Session[]
+
+  @@index([userId])
+}
+
+model InterviewerProfile {
+  id                String   @id @default(cuid())
+  name              String
+  avatar            String?
+  gender            String
+  interviewStyles   Json     // Array of interview styles (e.g., "friendly", "formal", "challenging")
+  industryExperience Json    // Array of industries they've worked in
+  roleExpertise     Json     // Array of roles they can interview for
+  experienceLevels  Json     // Array of experience levels they handle (entry, mid, senior, etc.)
+  description       String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  sessions          Session[]
+  surveys           SessionSurvey[]
+
+  @@index([gender])
+}
+
+model Session {
+  id                String    @id @default(cuid())
+  userId            String
+  agentType         String    // "english_tutor" or "interview_preparer"
+
+  // English Tutor fields
+  englishResponseId String?
+  matchedTutorId    String?
+
+  // Interview Preparer fields
+  interviewResponseId String?
+  matchedInterviewerId String?
+
+  // Common fields
+  roomName          String?
+  participantToken  String?
+  serverUrl         String?
+  startedAt         DateTime  @default(now())
+  endedAt           DateTime?
+  status            String    @default("pending")
+  endReason         String?
+  egressId          String?   // LiveKit Egress recording ID
+  audioUrl          String?   // S3 URL of recorded audio
+  evaluationScores  Json?     // CEFR evaluation scores (pronunciation, grammar, vocabulary, fluency, comprehension)
+  evaluationData    Json?     // Full evaluation data (scores, overallScore, cefrLevel, insights)
+
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // English Tutor relations
+  englishResponse   EnglishTutorQnResponses? @relation(fields: [englishResponseId], references: [id], onDelete: Cascade)
+  matchedTutor      TutorProfile? @relation(fields: [matchedTutorId], references: [id], onDelete: Cascade)
+
+  // Interview Preparer relations
+  interviewResponse InterviewPreparerQnResponses? @relation(fields: [interviewResponseId], references: [id], onDelete: Cascade)
+  matchedInterviewer InterviewerProfile? @relation(fields: [matchedInterviewerId], references: [id], onDelete: Cascade)
+
+  survey            SessionSurvey?
+
+  @@index([userId])
+  @@index([status])
+  @@index([startedAt])
+  @@index([agentType])
+}
+
+model SessionSurvey {
+  id                String    @id @default(cuid())
+  sessionId         String    @unique
+  agentType         String    // "english_tutor" or "interview_preparer"
+
+  // English Tutor fields
+  matchedTutorId    String?
+
+  // Interview Preparer fields
+  matchedInterviewerId String?
+
+  // Common fields
+  npsScore          Int?      // 0-10 (category calculated: 0-6=detractor, 7-8=passive, 9-10=promoter)
+  feedbackText      String?   // Long text response
+  createdAt         DateTime  @default(now())
+
+  session           Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // Relations based on agent type
+  matchedTutor      TutorProfile? @relation(fields: [matchedTutorId], references: [id], onDelete: Cascade)
+  matchedInterviewer InterviewerProfile? @relation(fields: [matchedInterviewerId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([matchedTutorId])
+  @@index([matchedInterviewerId])
+  @@index([agentType])
+}
+
+model Waitlist {
+  id           String   @id @default(cuid())
+  userId       String?
+  email        String
+  whatsapp     String?
+  planType     String   // "starter", "growth", "professional"
+  createdAt    DateTime @default(now())
+
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([email])
+  @@index([planType])
+}
