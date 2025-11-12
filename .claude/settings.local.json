@@ -16,7 +16,11 @@
       "WebSearch",
       "Bash(dir \"C:\\Users\\hp\\Documents\\GitHub\\demo-fl-flow\\learning-forever-nextjs\" /b)",
       "Bash(dir:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git -C \"C:\\Users\\hp\\Documents\\GitHub\\demo-fl-flow\" log --oneline -5)",
+      "Bash(copy learning-forever-nextjs.env .env.backup)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
