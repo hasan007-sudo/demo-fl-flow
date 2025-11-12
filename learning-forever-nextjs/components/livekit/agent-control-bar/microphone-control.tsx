@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useLocalParticipant, useRoomContext } from '@livekit/components-react';
 import { BarVisualizer } from '@livekit/components-react';
-import { Mic, MicOff, ChevronDown, Check } from 'lucide-react';
+import { Mic, MicOff, ChevronDown, Check, Loader2 } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { cn } from '@/lib/utils';
+import { MicrophonePermissionDialog } from './microphone-permission-dialog';
 
 export function MicrophoneControl() {
   const { localParticipant } = useLocalParticipant();
@@ -15,6 +16,12 @@ export function MicrophoneControl() {
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+
+  // Permission management state
+  const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied' | 'checking'>('checking');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const prevPermissionStateRef = useRef<'prompt' | 'granted' | 'denied' | 'checking'>('checking');
 
   // Use LiveKit's built-in speaking detection
   useEffect(() => {
@@ -35,6 +42,68 @@ export function MicrophoneControl() {
       localParticipant.off('isSpeakingChanged', handleSpeakingChanged);
     };
   }, [localParticipant, isEnabled]);
+
+  // Proactive permission check on mount
+  useEffect(() => {
+    const checkPermission = async () => {
+      try {
+        setIsLoading(true);
+
+        // Check if Permissions API is supported
+        if ('permissions' in navigator) {
+          const result = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+          setPermissionState(result.state as 'prompt' | 'granted' | 'denied');
+
+          // Show dialog if permission is denied or prompt
+          if (result.state === 'denied' || result.state === 'prompt') {
+            setIsDialogOpen(true);
+          }
+
+          // Listen for permission changes
+          result.addEventListener('change', () => {
+            const newState = result.state as 'prompt' | 'granted' | 'denied';
+            setPermissionState(newState);
+          });
+        } else {
+          // Fallback: Try to request permission directly
+          try {
+            await navigator.mediaDevices.getUserMedia({ audio: true });
+            setPermissionState('granted');
+          } catch (error) {
+            if (error instanceof Error && error.name === 'NotAllowedError') {
+              setPermissionState('denied');
+              setIsDialogOpen(true);
+            } else {
+              setPermissionState('prompt');
+              setIsDialogOpen(true);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking microphone permission:', error);
+        setPermissionState('prompt');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkPermission();
+  }, []);
+
+  // Auto-refresh when permission changes from denied/prompt to granted
+  useEffect(() => {
+    const prevState = prevPermissionStateRef.current;
+
+    // Only refresh if permission was explicitly denied or prompt, and now becomes granted
+    // Don't refresh if it was just 'checking' (initial state)
+    if ((prevState === 'denied' || prevState === 'prompt') && permissionState === 'granted') {
+      // Permission was just granted by user, refresh the page
+      window.location.reload();
+    }
+
+    // Update the ref with current state
+    prevPermissionStateRef.current = permissionState;
+  }, [permissionState]);
 
   // Get available devices
   useEffect(() => {
@@ -73,10 +142,34 @@ export function MicrophoneControl() {
   // Handle microphone toggle
   const handleToggle = useCallback(async () => {
     if (!localParticipant) return;
+
+    // Check permission state before toggling
+    if (permissionState === 'denied') {
+      setIsDialogOpen(true);
+      return;
+    }
+
     const newState = !isEnabled;
-    setIsEnabled(newState);
-    await localParticipant.setMicrophoneEnabled(newState);
-  }, [localParticipant, isEnabled]);
+    setIsLoading(true);
+
+    try {
+      setIsEnabled(newState);
+      await localParticipant.setMicrophoneEnabled(newState);
+    } catch (error) {
+      console.error('Error toggling microphone:', error);
+
+      // Revert state on error
+      setIsEnabled(!newState);
+
+      // Handle permission errors
+      if (error instanceof Error && error.name === 'NotAllowedError') {
+        setPermissionState('denied');
+        setIsDialogOpen(true);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [localParticipant, isEnabled, permissionState]);
 
   // Handle device change
   const handleDeviceChange = useCallback(
@@ -94,6 +187,23 @@ export function MicrophoneControl() {
     },
     [room]
   );
+
+  // Handle retry permission request
+  const handleRetryPermission = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      setPermissionState('granted');
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error('Permission request failed:', error);
+      if (error instanceof Error && error.name === 'NotAllowedError') {
+        setPermissionState('denied');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const selectedDevice = devices.find((d) => d.deviceId === selectedDeviceId);
 
@@ -136,14 +246,19 @@ export function MicrophoneControl() {
         {/* Left: Toggle Button */}
         <button
           onClick={handleToggle}
+          disabled={isLoading || permissionState === 'denied' || permissionState === 'checking'}
           className={cn(
             "relative h-12 w-12 flex items-center justify-center transition-all duration-200",
             isEnabled
               ? "bg-emerald-500/20 hover:bg-emerald-500/30"
-              : "bg-gray-100 hover:bg-gray-200"
+              : "bg-gray-100 hover:bg-gray-200",
+            (isLoading || permissionState === 'denied' || permissionState === 'checking') &&
+              "opacity-50 cursor-not-allowed"
           )}
         >
-          {isEnabled ? (
+          {isLoading ? (
+            <Loader2 className="h-5 w-5 text-gray-600 animate-spin" />
+          ) : isEnabled ? (
             <Mic className="h-5 w-5 text-emerald-600 relative z-10" />
           ) : (
             <MicOff className="h-5 w-5 text-red-600" />
@@ -157,7 +272,11 @@ export function MicrophoneControl() {
       <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger asChild>
           <button
-            className="h-12 px-3 flex items-center gap-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm"
+            disabled={isLoading || permissionState !== 'granted'}
+            className={cn(
+              "h-12 px-3 flex items-center gap-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm",
+              (isLoading || permissionState !== 'granted') && "opacity-50 cursor-not-allowed"
+            )}
           >
             <span className="max-w-[140px] truncate">
               {selectedDevice?.label || 'Select microphone'}
@@ -189,6 +308,14 @@ export function MicrophoneControl() {
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
       </div>
+
+      {/* Microphone Permission Dialog */}
+      <MicrophonePermissionDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        permissionState={permissionState}
+        onRetry={handleRetryPermission}
+      />
     </div>
   );
 }
