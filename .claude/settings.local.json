@@ -20,7 +20,9 @@
       "Bash(git -C \"C:\\Users\\hp\\Documents\\GitHub\\demo-fl-flow\" log --oneline -5)",
       "Bash(copy learning-forever-nextjs.env .env.backup)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git rm:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

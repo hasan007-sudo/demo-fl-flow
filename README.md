@@ -1,290 +1,256 @@
-Welcome to your new TanStack app! 
+# Learning Forever - Next.js App
 
-# Getting Started
+AI-powered learning platform for English coaching and interview preparation with LiveKit voice sessions.
 
-To run this application:
+## 🚀 Setup Complete
+
+This Next.js app has been fully migrated from the TanStack Start version with LiveKit integration from grant-app.
+
+### Project Structure
+
+```
+learning-forever-nextjs/
+├── app/
+│   ├── api/                      # API routes
+│   │   ├── connection-details/   # LiveKit room creation
+│   │   ├── webhooks/livekit/     # Recording webhooks
+│   │   ├── sessions/             # Session management
+│   │   ├── session-survey/       # Survey submission
+│   │   └── users/                # User management
+│   ├── english-tutor/            # English tutor flow
+│   │   ├── page.tsx              # Questionnaire
+│   │   └── session/page.tsx      # LiveKit session
+│   ├── interview-preparer/       # Interview prep flow
+│   │   ├── page.tsx              # Questionnaire
+│   │   └── session/page.tsx      # LiveKit session
+│   ├── survey/page.tsx           # Post-session survey
+│   ├── report/page.tsx           # Session evaluation report
+│   └── page.tsx                  # Landing page
+├── components/
+│   ├── livekit/                  # LiveKit components
+│   ├── session/                  # Session management
+│   ├── ui/                       # ShadCN components
+│   ├── Navbar.tsx                # Navigation bar
+│   └── theme-provider.tsx        # Theme provider
+├── lib/
+│   ├── prisma.ts                 # Prisma client
+│   ├── livekit-egress.ts         # Recording utilities
+│   ├── s3-client.ts              # S3 utilities
+│   ├── session-timer-config.ts   # Timer configuration
+│   └── utils.ts                  # Utility functions
+├── hooks/
+│   └── use-session-timer.ts      # Session timer hook
+└── prisma/
+    └── schema.prisma              # Database schema
+```
+
+## 📦 Dependencies Installed
+
+- **Framework**: Next.js 16 with App Router
+- **Styling**: Tailwind CSS v4, ShadCN UI
+- **LiveKit**: livekit-client, livekit-server-sdk, @livekit/components-react
+- **Database**: Prisma with PostgreSQL
+- **Forms**: react-hook-form, zod, @hookform/resolvers
+- **Storage**: @aws-sdk/client-s3, @aws-sdk/s3-request-presigner
+- **Charts**: recharts
+- **UI**: lucide-react, next-themes, sonner
+- **AI**: @google/generative-ai (optional)
+
+## 🗄️ Database Setup
+
+### Tables Created:
+- ✅ `TutorProfile` - AI tutor profiles
+- ✅ `InterviewerProfile` - AI interviewer profiles
+- ✅ `User` - User accounts
+- ✅ `EnglishTutorQnResponses` - English tutor questionnaires
+- ✅ `InterviewPreparerQnResponses` - Interview prep questionnaires
+- ✅ `Session` - Session tracking with LiveKit
+- ✅ `SessionSurvey` - Post-session surveys
+- ✅ `Waitlist` - Email waitlist
+
+Migrations have been run successfully!
+
+## 🔑 Environment Variables
+
+Your `.env` file should contain:
+
+```env
+# Database
+DATABASE_URL="postgresql://..."
+
+# LiveKit
+LIVEKIT_URL="wss://..."
+LIVEKIT_API_KEY="..."
+LIVEKIT_API_SECRET="..."
+
+# S3 Storage (for session recordings)
+S3_ACCESS_KEY="..."
+S3_SECRET_KEY="..."
+S3_REGION="..."
+S3_BUCKET="..."
+S3_ENDPOINT="..."
+S3_FORCE_PATH_STYLE="false"
+
+# AI Evaluation (optional)
+GOOGLE_GENERATIVE_AI_API_KEY="..."
+```
+
+## 🎯 User Flows
+
+### English Tutor Flow
+1. **Landing Page** (`/`) → Click "Talk to AI - Free" or "Explore" under English Coach
+2. **Questionnaire** (`/english-tutor`) → Fill proficiency, learning goals, correction preference
+3. **Session** (`/english-tutor/session`) → 10-minute voice session with AI tutor
+4. **Survey** (`/survey`) → Rate experience (0-10) and provide feedback
+5. **Report** (`/report`) → View CEFR evaluation scores and charts
+
+### Interview Preparer Flow
+1. **Landing Page** (`/`) → Click "Explore" under Interview Preparer
+2. **Questionnaire** (`/interview-preparer`) → Fill interview type, job role, experience
+3. **Session** (`/interview-preparer/session`) → 15-minute mock interview
+4. **Survey** (`/survey`) → Rate experience and feedback
+5. **Report** (`/report`) → View interview performance evaluation
+
+## 🎨 Design System
+
+### Minimal Dark Theme
+- **Background**: Gray-900 (#111827)
+- **Cards**: Gray-800 with gray-700 borders
+- **Text**: White primary, gray-400 secondary
+- **Accents**: Indigo-500 for links/actions
+- **NO emojis**: Text-only interface
+- **NO colorful styling**: Consistent dark theme throughout
+
+### Key Components
+- **Navbar**: Atom logo + theme toggle + navigation
+- **SessionView**: LiveKit room with voice visualization
+- **AgentControlBar**: Microphone controls + device selection
+- **SessionTimerDisplay**: Countdown timer with status indicators
+- **Survey**: Simple NPS score + text feedback
+- **Report**: Radar chart + skill breakdown + insights
+
+## 🚀 Running the App
 
 ```bash
+# Install dependencies (if not done)
 npm install
-npm run start
+
+# Run database migrations (already done)
+npx prisma migrate dev
+
+# Generate Prisma client (already done)
+npx prisma generate
+
+# Start development server
+npm run dev
 ```
 
-# Building For Production
+Visit `http://localhost:3000`
 
-To build this application for production:
+## 🧪 Testing the App
+
+### Test Flow End-to-End:
+
+1. **Landing Page**
+   - Check theme toggle works (light/dark)
+   - Navigation links functional
+   - Footer displays
+
+2. **Questionnaire**
+   - Fill out form with valid data
+   - Submit should navigate to session
+
+3. **Session**
+   - LiveKit connection establishes
+   - Microphone controls work
+   - Timer counts down
+   - Can leave session
+
+4. **Survey**
+   - Select NPS score (0-10)
+   - Fill feedback text
+   - Submit navigates to report
+
+5. **Report**
+   - Displays evaluation scores
+   - Shows radar chart
+   - Back to home works
+
+## ⚠️ Known Setup Requirements
+
+### Before Testing LiveKit:
+1. ✅ Environment variables configured
+2. ✅ Database migrations run
+3. ⚠️ LiveKit server running and accessible
+4. ⚠️ S3 bucket created and configured
+5. ⚠️ Webhook URL configured in LiveKit dashboard
+
+### Optional Setup:
+- Seed tutor/interviewer profiles in database
+- Configure Gemini AI for automatic evaluations
+- Set up production LiveKit server
+- Configure production S3 bucket
+
+## 📝 API Routes Reference
+
+- `POST /api/connection-details` - Create LiveKit room and token
+- `POST /api/webhooks/livekit` - Handle recording webhooks
+- `POST /api/sessions` - Create session
+- `GET /api/sessions/[id]` - Get session details
+- `PATCH /api/sessions/[id]` - Update session
+- `POST /api/session-survey` - Submit survey
+- `POST /api/users` - Create user
+- `GET /api/tutors` - List tutors
+- `GET /api/interviewers` - List interviewers
+
+## 🎯 Next Steps
+
+1. **Test the complete flow** with LiveKit server
+2. **Seed database** with sample tutor/interviewer profiles
+3. **Configure webhooks** in LiveKit dashboard
+4. **Test recording** and S3 storage
+5. **Test evaluation** with Gemini AI (optional)
+6. **Deploy** to production (Vercel recommended)
+
+## 🛠️ Development Commands
 
 ```bash
+# Start dev server
+npm run dev
+
+# Build for production
 npm run build
+
+# Start production server
+npm start
+
+# Run linter
+npm run lint
+
+# Database commands
+npx prisma studio          # Open database GUI
+npx prisma migrate dev     # Create new migration
+npx prisma generate        # Regenerate Prisma client
+npx prisma db push         # Push schema without migration
 ```
 
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
-```bash
-npm run test
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-
-
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
-
-```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
-```
-
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
-
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// ...
-
-const queryClient = new QueryClient();
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-npm install @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+## 📚 Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS v4, ShadCN UI
+- **Real-time**: LiveKit (WebRTC voice sessions)
+- **Database**: PostgreSQL with Prisma ORM
+- **Storage**: AWS S3 (session recordings)
+- **AI**: Google Gemini (optional evaluations)
+- **Deployment**: Vercel-ready
+
+## 🎉 Status
+
+✅ All pages created
+✅ All API routes implemented
+✅ LiveKit components integrated
+✅ Database schema migrated
+✅ Minimal dark theme applied
+✅ Complete user flows implemented
+
+**Ready for testing!**
