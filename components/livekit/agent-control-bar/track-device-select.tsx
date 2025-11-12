@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Microphone } from '@phosphor-icons/react';
+import { Mic } from 'lucide-react';
 import { Track } from 'livekit-client';
 
 interface TrackDeviceSelectProps {
@@ -111,7 +111,7 @@ export function TrackDeviceSelect({
           : "w-full"
         }
       >
-        {compact && <Microphone className="mr-2 h-4 w-4 text-slate-300" />}
+        {compact && <Mic className="mr-2 h-4 w-4 text-slate-300" />}
         <SelectValue placeholder="Select microphone" />
       </SelectTrigger>
       <SelectContent className="bg-slate-800 border-slate-700">

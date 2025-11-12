@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { AlertCircle, Home, Loader2 } from 'lucide-react'
@@ -33,7 +33,7 @@ interface SessionData {
   startedAt: string
 }
 
-export default function ReportPage() {
+function ReportContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('sessionId')
 
@@ -342,5 +342,20 @@ export default function ReportPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ReportPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading report...</p>
+        </div>
+      </div>
+    }>
+      <ReportContent />
+    </Suspense>
   )
 }

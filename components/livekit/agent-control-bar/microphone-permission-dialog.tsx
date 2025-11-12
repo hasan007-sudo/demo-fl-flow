@@ -14,7 +14,7 @@ import { Mic, MicOff, AlertCircle } from 'lucide-react';
 interface MicrophonePermissionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  permissionState: 'prompt' | 'denied' | 'granted';
+  permissionState: 'prompt' | 'denied' | 'granted' | 'checking';
   onRetry?: () => void;
 }
 

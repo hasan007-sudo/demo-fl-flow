@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CheckCircle } from '@phosphor-icons/react';
+import { CheckCircle } from 'lucide-react';
 
 const MATCHING_STEPS = [
   { label: 'Tuning to your goals', duration: 2000 },
@@ -81,10 +81,7 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
                 {/* Step Label */}
                 <div className="flex items-center gap-3 mb-2">
                   {isCompleted ? (
-                    <CheckCircle
-                      className="h-5 w-5 text-green-400"
-                      weight="fill"
-                    />
+                    <CheckCircle className="h-5 w-5 text-green-400 fill-green-400" />
                   ) : (
                     <div className={`w-5 h-5 rounded-full border-2 ${
                       isInProgress

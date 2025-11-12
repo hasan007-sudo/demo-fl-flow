@@ -3,8 +3,8 @@
 import { useCallback, useState } from 'react';
 import { useLocalParticipant } from '@livekit/components-react';
 import { BarVisualizer } from '@livekit/components-react';
-import { Toggle } from '@/components/ui/toggle';
-import { Microphone, MicrophoneSlash } from '@phosphor-icons/react';
+import { Mic, MicOff } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface TrackToggleProps {
   source: 'microphone' | 'camera' | 'screen_share';
@@ -39,14 +39,16 @@ export function TrackToggle({
   }
 
   return (
-    <Toggle
-      pressed={isEnabled}
-      onPressedChange={handleToggle}
-      className="relative h-12 w-12 rounded-full data-[state=on]:bg-emerald-500/20"
+    <button
+      onClick={handleToggle}
+      className={cn(
+        "relative h-12 w-12 rounded-full transition-colors",
+        isEnabled ? "bg-emerald-500/20" : "bg-gray-100"
+      )}
     >
       {isEnabled ? (
         <>
-          <Microphone className="h-5 w-5 text-emerald-500" />
+          <Mic className="h-5 w-5 text-emerald-500 mx-auto" />
           <BarVisualizer
             state="speaking"
             barCount={3}
@@ -54,13 +56,13 @@ export function TrackToggle({
           />
         </>
       ) : (
-        <MicrophoneSlash className="h-5 w-5 text-red-500" />
+        <MicOff className="h-5 w-5 text-red-500 mx-auto" />
       )}
       {showLabel && (
         <span className="ml-2 text-sm font-medium">
           {source === 'microphone' ? 'Mic' : 'Camera'}
         </span>
       )}
-    </Toggle>
+    </button>
   );
 }

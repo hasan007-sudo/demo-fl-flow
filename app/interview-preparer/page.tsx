@@ -32,7 +32,7 @@ const interviewPreparerSchema = z.object({
   practiceGoals: z.array(z.string()).default([]),
 });
 
-type InterviewPreparerFormData = z.infer<typeof interviewPreparerSchema>;
+type InterviewPreparerFormData = z.input<typeof interviewPreparerSchema>;
 
 export default function InterviewPreparerPage() {
   const router = useRouter();

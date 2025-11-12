@@ -50,7 +50,7 @@ export function MicrophoneControl() {
         setIsLoading(true);
 
         // Check if Permissions API is supported
-        if ('permissions' in navigator) {
+        if ('permissions' in navigator && navigator.permissions) {
           const result = await navigator.permissions.query({ name: 'microphone' as PermissionName });
           setPermissionState(result.state as 'prompt' | 'granted' | 'denied');
 
@@ -64,7 +64,7 @@ export function MicrophoneControl() {
             const newState = result.state as 'prompt' | 'granted' | 'denied';
             setPermissionState(newState);
           });
-        } else {
+        } else if (typeof navigator !== 'undefined' && navigator.mediaDevices) {
           // Fallback: Try to request permission directly
           try {
             await navigator.mediaDevices.getUserMedia({ audio: true });

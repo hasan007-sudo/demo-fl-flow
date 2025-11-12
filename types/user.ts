@@ -4,9 +4,9 @@
 
 export interface User {
   id: string;
-  email: string;
+  email: string | null;
   name: string | null;
-  whatsapp?: string | null;
+  whatsapp: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
