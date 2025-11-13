@@ -21,14 +21,9 @@ function InterviewPreparerSessionContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Timer: 15 minutes (900 seconds)
+  // Timer: Elapsed time counter (starts from 00:00)
   const timer = useSessionTimer({
-    duration: 900,
     autoStart: false,
-    agentType: 'interview_preparer',
-    onExpire: () => {
-      console.log('Session timer expired');
-    },
   });
 
   useEffect(() => {
@@ -102,11 +97,6 @@ function InterviewPreparerSessionContent() {
               participantToken: details.participantToken,
             }),
           });
-        }
-
-        // Start the timer once connected
-        if (isMounted) {
-          timer.startTimer();
         }
       } catch (err) {
         console.error('Error fetching connection details:', err);

@@ -10,10 +10,9 @@ import { TranscriptDisplay } from './transcript-display';
 import { useCheckpointLogger } from '@/hooks/use-checkpoint-logger';
 
 interface SessionTimerReturn {
-  remainingSeconds: number;
+  elapsedSeconds: number;
   formattedTime: string;
-  timerStatus: 'normal' | 'warning' | 'critical';
-  isExpired: boolean;
+  isRunning: boolean;
   startTimer: () => void;
   stopTimer: () => void;
   resetTimer: () => void;
@@ -43,24 +42,15 @@ function SessionContent({
   // Listen for checkpoint events and log them
   useCheckpointLogger();
 
-  // Handle timer expiry - disconnect room when timer expires
-  useEffect(() => {
-    if (timer?.isExpired && room) {
-      // Disconnect the room when timer expires
-      room.disconnect();
-    }
-  }, [timer?.isExpired, room]);
-
   return (
     <>
       {/* Audio renderer - Critical for playing remote audio tracks */}
       <RoomAudioRenderer />
 
-      {/* Timer display - Show countdown timer */}
-      {timer && !timer.isExpired && (
+      {/* Timer display - Show elapsed time */}
+      {timer && (
         <SessionTimerDisplay
           formattedTime={timer.formattedTime}
-          timerStatus={timer.timerStatus}
         />
       )}
 
@@ -102,10 +92,14 @@ export function SessionView({
       audio={true}
       token={participantToken}
       serverUrl={serverUrl}
-      onConnected={() => setIsConnected(true)}
+      onConnected={() => {
+        setIsConnected(true);
+        timer?.startTimer();
+      }}
       onDisconnected={() => {
         debugger;
         setIsConnected(false);
+        timer?.stopTimer();
         handleLeave();
       }}
       data-lk-theme="dark"

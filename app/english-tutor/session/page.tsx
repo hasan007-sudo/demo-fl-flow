@@ -21,14 +21,9 @@ function EnglishTutorSessionContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Timer: 5 minutes (300 seconds)
+  // Timer: Elapsed time counter (starts from 00:00)
   const timer = useSessionTimer({
-    duration: 300,
     autoStart: false,
-    agentType: 'english_tutor',
-    onExpire: () => {
-      console.log('Session timer expired');
-    },
   });
 
   useEffect(() => {
@@ -102,11 +97,6 @@ function EnglishTutorSessionContent() {
               participantToken: details.participantToken,
             }),
           });
-        }
-
-        // Start the timer once connected
-        if (isMounted) {
-          timer.startTimer();
         }
       } catch (err) {
         console.error('Error fetching connection details:', err);
