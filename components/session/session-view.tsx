@@ -97,7 +97,6 @@ export function SessionView({
         timer?.startTimer();
       }}
       onDisconnected={() => {
-        debugger;
         setIsConnected(false);
         timer?.stopTimer();
         handleLeave();

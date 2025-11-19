@@ -1,3 +1,5 @@
+// @@ Deprecated. We are using external /evaluate API for report analysis
+
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prisma } from "@/lib/prisma";
