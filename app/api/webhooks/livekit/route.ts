@@ -13,6 +13,22 @@ export async function POST(request: NextRequest) {
     const body = await request.text();
     const authHeader = request.headers.get('Authorization');
 
+    // let event;
+
+    // // Dev bypass: skip signature validation when no auth header in non-production
+    // if (process.env.NODE_ENV !== 'production' && !authHeader) {
+    //   console.log('⚠️ Dev mode: bypassing webhook signature validation');
+    //   event = JSON.parse(body);
+    // } else {
+    //   if (!authHeader) {
+    //     return NextResponse.json(
+    //       { error: 'Missing authorization header' },
+    //       { status: 401 }
+    //     );
+    //   }
+    //   event = await receiver.receive(body, authHeader);
+    // }
+
     if (!authHeader) {
       return NextResponse.json(
         { error: 'Missing authorization header' },
