@@ -215,6 +215,7 @@ function ReportContent() {
             audioUrl={audioUrl}
             recordingTitle={getSessionTitle()}
             studentName={studentName}
+            variant='standalone'
           />
         </AudioPlayerProvider>
       </div>
