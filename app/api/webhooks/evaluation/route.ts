@@ -3,8 +3,8 @@ import { webhookPayloadSchema } from '@/reportsV2/schemas';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
+  const body = await request.json();
   try {
-    const body = await request.json();
     const payload = webhookPayloadSchema.parse(body);
 
     if (payload.status === 'completed') {
@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Webhook processing error:', error);
+    console.error(`Payload received`, JSON.stringify(body));
     return NextResponse.json(
       {
         received: false,
