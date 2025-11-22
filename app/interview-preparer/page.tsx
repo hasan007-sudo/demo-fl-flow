@@ -27,7 +27,7 @@ const interviewPreparerSchema = z.object({
   companySize: z.string().default('mid-size'),
   interviewFormat: z.string().default('remote'),
   preparationLevel: z.string().default('some_experience'),
-  focusAreas: z.array(z.string()).default([]),
+  focusAreas: z.array(z.string()).min(1, 'Please select at least one focus area'),
   weakPoints: z.array(z.string()).default([]),
   practiceGoals: z.array(z.string()).default([]),
 });
@@ -129,7 +129,7 @@ export default function InterviewPreparerPage() {
         throw new Error('Failed to create user');
       }
 
-      const { user } = await userResponse.json();
+      const user = await userResponse.json();
 
       // Save Interview preparer responses (excluding whatsappNumber)
       const { whatsappNumber, ...interviewData } = data;
@@ -146,7 +146,7 @@ export default function InterviewPreparerPage() {
         throw new Error('Failed to save responses');
       }
 
-      const { response } = await responseData.json();
+      const response = await responseData.json();
 
       // Navigate to session page
       router.push(
@@ -159,10 +159,10 @@ export default function InterviewPreparerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors py-12 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors py-6 sm:py-8 md:py-12 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Interview Preparer</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900 dark:text-white">Interview Preparer</h1>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
           Answer a few questions to customize your interview practice
         </p>
 
@@ -174,7 +174,7 @@ export default function InterviewPreparerPage() {
               size="md"
             />
           )}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
             <div>
               <Label htmlFor="whatsappNumber" className="text-gray-700 dark:text-gray-300">WhatsApp Number</Label>
               <Input
@@ -199,12 +199,13 @@ export default function InterviewPreparerPage() {
           <div>
             <Label htmlFor="interviewType" className="text-gray-700 dark:text-gray-300">Interview Type</Label>
             <Select
+              value={formValues.interviewType}
               onValueChange={(value) => setValue('interviewType', value)}
             >
               <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                 <SelectValue placeholder="Select interview type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <SelectItem value="behavioral">Behavioral</SelectItem>
                 <SelectItem value="technical">Technical</SelectItem>
                 <SelectItem value="case_study">Case Study</SelectItem>
@@ -236,12 +237,13 @@ export default function InterviewPreparerPage() {
           <div>
             <Label htmlFor="experienceLevel" className="text-gray-700 dark:text-gray-300">Experience Level</Label>
             <Select
+              value={formValues.experienceLevel}
               onValueChange={(value) => setValue('experienceLevel', value)}
             >
               <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                 <SelectValue placeholder="Select your level" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <SelectItem value="entry">Entry Level (0-2 years)</SelectItem>
                 <SelectItem value="mid">Mid Level (3-5 years)</SelectItem>
                 <SelectItem value="senior">Senior Level (6-10 years)</SelectItem>
@@ -251,6 +253,44 @@ export default function InterviewPreparerPage() {
             {errors.experienceLevel && (
               <p className="text-red-500 dark:text-red-400 text-sm mt-1">
                 {errors.experienceLevel.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="focusAreas" className="text-gray-700 dark:text-gray-300">
+              Focus Areas
+              <span className="text-red-500 ml-1">*</span>
+            </Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+              {['Technical Skills', 'Behavioral Questions', 'Problem Solving', 'Communication',
+                'Leadership', 'System Design', 'Coding', 'Culture Fit'].map((area) => {
+                const isSelected = formValues.focusAreas.includes(area);
+                return (
+                  <button
+                    key={area}
+                    type="button"
+                    onClick={() => {
+                      if (isSelected) {
+                        setValue('focusAreas', formValues.focusAreas.filter((a) => a !== area));
+                      } else {
+                        setValue('focusAreas', [...formValues.focusAreas, area]);
+                      }
+                    }}
+                    className={`px-3 py-2.5 sm:px-2 sm:py-1.5 rounded-md font-medium text-sm sm:text-xs transition-all ${
+                      isSelected
+                        ? 'bg-indigo-600 dark:bg-indigo-500 text-white ring-1 ring-indigo-300 dark:ring-indigo-400'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {area}
+                  </button>
+                );
+              })}
+            </div>
+            {errors.focusAreas && (
+              <p className="text-red-500 dark:text-red-400 text-sm mt-1">
+                {errors.focusAreas.message}
               </p>
             )}
           </div>

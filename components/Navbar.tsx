@@ -1,17 +1,31 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
+import { Menu } from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <header className="flex justify-between items-center px-6 py-4 max-w-4xl mx-auto bg-white transition-colors">
-      <Link href="/" className="flex items-center space-x-3">
+    <header className="sticky top-0 z-50 flex justify-between items-center px-4 sm:px-6 py-4 max-w-4xl mx-auto bg-white transition-colors">
+      <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
         <svg
-          width="32"
-          height="32"
+          width="28"
+          height="28"
           viewBox="0 0 52 52"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          className="sm:w-8 sm:h-8"
         >
           <path
             d="M26 50C32.6274 50 38 39.2548 38 26C38 12.7452 32.6274 2 26 2C19.3726 2 14 12.7452 14 26C14 39.2548 19.3726 50 26 50Z"
@@ -59,11 +73,13 @@ export default function Navbar() {
             className="text-indigo-300 dark:text-indigo-200"
           />
         </svg>
-        <span className="text-lg font-semibold text-gray-900">
+        <span className="text-base sm:text-lg font-semibold text-gray-900">
           Learning Forever
         </span>
       </Link>
-      <nav className="flex items-center space-x-6">
+
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center space-x-6">
         <Link
           href="/english-tutor"
           className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -77,6 +93,40 @@ export default function Navbar() {
           Interview Preparer
         </Link>
       </nav>
+
+      {/* Mobile Navigation */}
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-9 w-9 md:hidden">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-[280px] sm:w-[350px]">
+          <SheetHeader>
+            <SheetTitle>Menu</SheetTitle>
+            <SheetDescription className="sr-only">
+              Navigation menu
+            </SheetDescription>
+          </SheetHeader>
+          <nav className="flex flex-col space-y-4 mt-8">
+            <Link
+              href="/english-tutor"
+              className="text-base text-gray-600 hover:text-gray-900 transition-colors py-2 px-2 rounded-md hover:bg-gray-100"
+              onClick={() => setOpen(false)}
+            >
+              English Tutor
+            </Link>
+            <Link
+              href="/interview-preparer"
+              className="text-base text-gray-600 hover:text-gray-900 transition-colors py-2 px-2 rounded-md hover:bg-gray-100"
+              onClick={() => setOpen(false)}
+            >
+              Interview Preparer
+            </Link>
+          </nav>
+        </SheetContent>
+      </Sheet>
     </header>
   )
 }

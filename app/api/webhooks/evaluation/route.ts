@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { webhookPayloadSchema } from '@/reportsV2/schemas';
+import { WebhookPayload, webhookPayloadSchema } from '@/reportsV2/schemas';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   try {
-    const payload = webhookPayloadSchema.parse(body);
+    const payload = webhookPayloadSchema.parse(body) as WebhookPayload;
 
     if (payload.status === 'completed') {
       await prisma.report.upsert({

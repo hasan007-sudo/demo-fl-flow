@@ -210,9 +210,9 @@ export default function EnglishTutorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors pt-4 pb-8">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors py-4 sm:py-6 md:py-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6 relative">
           {isCheckingUser && (
             <LoadingSpinner
               overlay={true}
@@ -220,11 +220,11 @@ export default function EnglishTutorPage() {
               size="md"
             />
           )}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1">
               {step === 1 ? 'Start Your AI Session' : 'Meet Your AI Coach'}
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {step === 1
                 ? 'Tell us about yourself to personalize your experience'
                 : 'Ready to begin your conversation'}
@@ -280,13 +280,13 @@ export default function EnglishTutorPage() {
                   Native Language
                   <span className="text-indigo-600 dark:text-indigo-400 ml-1">*</span>
                 </Label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {NATIVE_LANGUAGES.map((language) => (
                     <button
                       key={language}
                       type="button"
                       onClick={() => setValue('nativeLanguage', language)}
-                      className={`px-2 py-1.5 rounded-md font-medium text-xs transition-all ${
+                      className={`px-3 py-2.5 sm:px-2 sm:py-1.5 rounded-md font-medium text-sm sm:text-xs transition-all ${
                         formValues.nativeLanguage === language
                           ? 'bg-indigo-600 dark:bg-indigo-500 text-white ring-1 ring-indigo-300 dark:ring-indigo-400'
                           : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -312,7 +312,7 @@ export default function EnglishTutorPage() {
                     (Select one or more)
                   </span>
                 </Label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {LEARNING_GOAL_OPTIONS.map((goal) => {
                     const isSelected = formValues.learningGoals.includes(goal)
                     return (
@@ -326,7 +326,7 @@ export default function EnglishTutorPage() {
                             setValue('learningGoals', [...formValues.learningGoals, goal])
                           }
                         }}
-                        className={`px-2 py-1.5 rounded-md font-medium text-xs transition-all ${
+                        className={`px-3 py-2.5 sm:px-2 sm:py-1.5 rounded-md font-medium text-sm sm:text-xs transition-all ${
                           isSelected
                             ? 'bg-indigo-600 dark:bg-indigo-500 text-white ring-1 ring-indigo-300 dark:ring-indigo-400'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
@@ -349,10 +349,10 @@ export default function EnglishTutorPage() {
           ) : (
             <div>
               {/* Agent Card */}
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 mb-6">
-                <div className="flex items-start justify-between mb-4">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6">
+                <div className="flex items-start justify-between mb-3 sm:mb-4">
                   {/* Agent Avatar */}
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 via-purple-500 to-indigo-600 shadow-lg"></div>
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-yellow-400 via-purple-500 to-indigo-600 shadow-lg"></div>
 
                   {/* Settings Button */}
                   <button
@@ -361,16 +361,16 @@ export default function EnglishTutorPage() {
                     className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     aria-label="Agent settings"
                   >
-                    <Settings className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
                   </button>
                 </div>
 
                 {/* Agent Description */}
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Hello, {formValues.name}! 👋
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3 sm:mb-4">
                     I'm your AI coach with a{' '}
                     <span className="font-medium text-gray-900 dark:text-white">
                       {agentConfig.personality.toLowerCase()}
@@ -432,7 +432,7 @@ export default function EnglishTutorPage() {
                           <SelectTrigger className="bg-white dark:bg-gray-700">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                             {AGENT_PERSONALITIES.map((p) => (
                               <SelectItem key={p} value={p}>
                                 {p}
@@ -455,7 +455,7 @@ export default function EnglishTutorPage() {
                           <SelectTrigger className="bg-white dark:bg-gray-700">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
                             {TALKING_SPEEDS.map((s) => (
                               <SelectItem key={s} value={s}>
                                 {s}

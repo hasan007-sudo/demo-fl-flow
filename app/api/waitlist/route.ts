@@ -9,9 +9,9 @@ export async function POST(request: Request) {
     const { email, whatsapp, planType } = body;
 
     // Validate required fields
-    if (!email || !planType) {
+    if (!email) {
       return NextResponse.json(
-        { error: 'Email and plan type are required' },
+        { error: 'Email is required' },
         { status: 400 }
       );
     }
@@ -25,8 +25,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate plan type
-    if (!VALID_PLAN_TYPES.includes(planType)) {
+    // Validate plan type if provided
+    if (planType && !VALID_PLAN_TYPES.includes(planType)) {
       return NextResponse.json(
         { error: 'Invalid plan type. Must be starter, growth, or professional' },
         { status: 400 }
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
         userId: user.id,
         email,
         whatsapp: whatsapp || null,
-        planType,
+        planType: planType || null,
       },
       include: {
         user: true,

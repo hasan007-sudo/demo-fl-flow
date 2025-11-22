@@ -188,7 +188,7 @@ model Waitlist {
   userId       String?
   email        String
   whatsapp     String?
-  planType     String   // "starter", "growth", "professional"
+  planType     String?  // "starter", "growth", "professional" - optional
   createdAt    DateTime @default(now())
 
   user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)

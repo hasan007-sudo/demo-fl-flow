@@ -34,35 +34,29 @@ export function TileLayout() {
         {isSpeaking && (
           <>
             {/* Wave 1 - Innermost */}
-            <div className="absolute rounded-full border-2 border-emerald-600/40"
+            <div className="absolute rounded-full border-2 border-emerald-600/40 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32"
                  style={{
-                   width: '128px',
-                   height: '128px',
                    animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite'
                  }} />
             {/* Wave 2 - Middle */}
-            <div className="absolute rounded-full border-2 border-emerald-500/30"
+            <div className="absolute rounded-full border-2 border-emerald-500/30 w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40"
                  style={{
-                   width: '160px',
-                   height: '160px',
                    animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
                    animationDelay: '0.2s'
                  }} />
             {/* Wave 3 - Outermost */}
-            <div className="absolute rounded-full border-2 border-emerald-400/20"
+            <div className="absolute rounded-full border-2 border-emerald-400/20 w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48"
                  style={{
-                   width: '192px',
-                   height: '192px',
                    animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
                    animationDelay: '0.4s'
                  }} />
           </>
         )}
 
-        <div className={`relative z-10 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 shadow-lg transition-all duration-300 backdrop-blur-sm ${
-          isSpeaking ? 'shadow-emerald-400/50 scale-110 ring-4 ring-emerald-300/30' : 'shadow-emerald-400/30'
+        <div className={`relative z-10 flex h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-400/30 shadow-lg transition-all duration-300 backdrop-blur-sm ${
+          isSpeaking ? 'shadow-emerald-400/50 scale-110 ring-2 sm:ring-4 ring-emerald-300/30' : 'shadow-emerald-400/30'
         }`}>
-          <div className="h-20 w-20">
+          <div className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20">
             <BarVisualizer
               state={getVisualizerState()}
               barCount={5}
@@ -72,7 +66,7 @@ export function TileLayout() {
         </div>
 
         {/* State indicator text */}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 translate-y-full whitespace-nowrap text-sm font-medium text-gray-700 transition-all duration-300">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 translate-y-full whitespace-nowrap text-xs sm:text-sm font-medium text-gray-700 transition-all duration-300">
           {!agent && 'Connecting to agent...'}
           {agent && state === 'initializing' && 'Initializing...'}
           {agent && state === 'listening' && 'Listening...'}

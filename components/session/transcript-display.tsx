@@ -167,35 +167,35 @@ export function TranscriptDisplay({
   return (
     <div
       className={cn(
-        'fixed bottom-20 left-0 right-0 z-30 transition-all duration-300 ease-in-out',
-        isExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-3rem)]',
+        'fixed bottom-16 sm:bottom-20 left-0 right-0 z-30 transition-all duration-300 ease-in-out',
+        isExpanded ? 'translate-y-0' : 'translate-y-[calc(100%-2.5rem)] sm:translate-y-[calc(100%-3rem)]',
         className
       )}
     >
-      <div className="mx-4 sm:mx-12 max-w-4xl mx-auto">
-        <div className="rounded-t-2xl border border-gray-200 bg-white/95 backdrop-blur-xl shadow-2xl">
+      <div className="mx-2 sm:mx-4 md:mx-12 max-w-4xl mx-auto">
+        <div className="rounded-t-xl sm:rounded-t-2xl border border-gray-200 bg-white/95 backdrop-blur-xl shadow-2xl">
           {/* Header - Always visible */}
           <button
             onClick={toggleExpanded}
-            className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors rounded-t-2xl"
+            className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50 transition-colors rounded-t-xl sm:rounded-t-2xl"
             aria-label={isExpanded ? 'Collapse transcript' : 'Expand transcript'}
             aria-expanded={isExpanded}
           >
-            <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
+              <span className="text-xs sm:text-sm font-medium text-gray-900">
                 Transcript
               </span>
               {transcripts.size > 0 && (
-                <span className="text-xs text-gray-500">
-                  ({transcripts.size} {transcripts.size === 1 ? 'message' : 'messages'})
+                <span className="text-[10px] sm:text-xs text-gray-500">
+                  ({transcripts.size})
                 </span>
               )}
             </div>
             {isExpanded ? (
-              <ChevronDown className="h-5 w-5 text-gray-600" />
+              <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             ) : (
-              <ChevronUp className="h-5 w-5 text-gray-600" />
+              <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
             )}
           </button>
 
@@ -213,7 +213,7 @@ export function TranscriptDisplay({
               <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="overflow-y-auto p-4 space-y-3"
+                className="overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-3"
                 style={{ maxHeight }}
                 role="log"
                 aria-label="Conversation transcript"
@@ -230,14 +230,14 @@ export function TranscriptDisplay({
                     <div
                       key={segment.id}
                       className={cn(
-                        'flex gap-3 animate-fadeIn',
+                        'flex gap-2 sm:gap-3 animate-fadeIn',
                         segment.role === 'assistant' ? 'flex-row' : 'flex-row-reverse'
                       )}
                     >
                       {/* Avatar */}
                       <div
                         className={cn(
-                          'flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center',
+                          'flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center',
                           segment.role === 'assistant'
                             ? 'bg-emerald-500/20 text-emerald-600'
                             : 'bg-blue-500/20 text-blue-600'
@@ -245,22 +245,22 @@ export function TranscriptDisplay({
                         aria-hidden="true"
                       >
                         {segment.role === 'assistant' ? (
-                          <Bot className="h-4 w-4" />
+                          <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
                         ) : (
-                          <User className="h-4 w-4" />
+                          <User className="h-3 w-3 sm:h-4 sm:w-4" />
                         )}
                       </div>
 
                       {/* Message bubble */}
                       <div
                         className={cn(
-                          'flex-1 max-w-[80%]',
+                          'flex-1 max-w-[85%] sm:max-w-[80%]',
                           segment.role === 'assistant' ? 'mr-auto' : 'ml-auto'
                         )}
                       >
                         <div
                           className={cn(
-                            'rounded-2xl px-4 py-2.5 relative',
+                            'rounded-xl sm:rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 relative',
                             segment.role === 'assistant'
                               ? 'bg-emerald-50 text-gray-900 border border-emerald-200'
                               : 'bg-blue-50 text-gray-900 border border-blue-200'
@@ -272,7 +272,7 @@ export function TranscriptDisplay({
                           </span>
 
                           {/* Message text */}
-                          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                          <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">
                             {segment.text}
                             {!segment.isFinal && (
                               <span className="inline-block ml-1 animate-pulse">...</span>
@@ -282,7 +282,7 @@ export function TranscriptDisplay({
 
                         {/* Timestamp */}
                         <p
-                          className="text-xs text-gray-500 mt-1 px-4"
+                          className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1 px-3 sm:px-4"
                           aria-label={`Sent at ${formatTime(segment.timestamp)}`}
                         >
                           {formatTime(segment.timestamp)}

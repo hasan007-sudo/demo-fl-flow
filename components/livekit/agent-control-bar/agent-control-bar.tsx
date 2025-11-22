@@ -26,20 +26,21 @@ export function AgentControlBar({
   }, [disconnectSession, onLeave]);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center px-4 py-4 sm:px-12 animate-slide-up" style={{ animationDelay: '0.5s' }}>
-      <div className="flex w-full max-w-2xl items-center justify-between rounded-2xl border border-gray-200 bg-white/90 p-4 backdrop-blur-xl shadow-xl sm:p-6 transition-all duration-300 hover:border-gray-300">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center px-2 py-3 sm:px-4 sm:py-4 md:px-12 animate-slide-up" style={{ animationDelay: '0.5s' }}>
+      <div className="flex w-full max-w-2xl items-center justify-between rounded-xl sm:rounded-2xl border border-gray-200 bg-white/90 p-2 sm:p-4 md:p-6 backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-gray-300">
         {/* Left/Center: Microphone Controls */}
         <MicrophoneControl />
 
         {/* Right: End Call Button */}
         <Button
           variant="outline"
-          size="lg"
+          size="default"
           onClick={handleLeave}
-          className="font-mono border-2 border-red-500/70 text-red-600 hover:bg-red-50 hover:border-red-500"
+          className="font-mono border-2 border-red-500/70 text-red-600 hover:bg-red-50 hover:border-red-500 text-xs sm:text-sm px-2 sm:px-4 h-9 sm:h-10"
         >
-          <PhoneOff className="mr-2 h-5 w-5" />
-          End Call
+          <PhoneOff className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="hidden xs:inline">End Call</span>
+          <span className="inline xs:hidden">End</span>
         </Button>
       </div>
     </div>

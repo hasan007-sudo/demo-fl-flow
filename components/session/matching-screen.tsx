@@ -52,20 +52,20 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
   }, [onComplete]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] px-6">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[450px] md:min-h-[500px] px-4 sm:px-6">
+      <div className="w-full max-w-md space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl font-bold text-white">
+        <div className="text-center space-y-1 sm:space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">
             Matching you
           </h2>
-          <p className="text-2xl font-semibold text-white/90">
+          <p className="text-xl sm:text-2xl font-semibold text-white/90">
             with the right Tutor...
           </p>
         </div>
 
         {/* Progress Steps */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {MATCHING_STEPS.map((step, index) => {
             const isActive = currentStep >= index;
             const isCompleted = completedSteps.includes(index);
@@ -79,17 +79,17 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
                 }`}
               >
                 {/* Step Label */}
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
                   {isCompleted ? (
-                    <CheckCircle className="h-5 w-5 text-green-400 fill-green-400" />
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 fill-green-400" />
                   ) : (
-                    <div className={`w-5 h-5 rounded-full border-2 ${
+                    <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 ${
                       isInProgress
                         ? 'border-white animate-pulse'
                         : 'border-white/40'
                     }`} />
                   )}
-                  <span className={`text-sm font-medium ${
+                  <span className={`text-xs sm:text-sm font-medium ${
                     isCompleted
                       ? 'text-white'
                       : isInProgress
@@ -101,7 +101,7 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                <div className="h-1.5 sm:h-2 w-full bg-white/10 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all ${
                       isCompleted

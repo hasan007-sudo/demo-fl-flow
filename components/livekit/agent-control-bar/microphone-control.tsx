@@ -208,10 +208,10 @@ export function MicrophoneControl() {
   const selectedDevice = devices.find((d) => d.deviceId === selectedDeviceId);
 
   return (
-    <div className="relative flex items-center gap-3">
+    <div className="relative flex items-center gap-1.5 sm:gap-3">
       {/* Sound wave lines for user speaking */}
       {(
-        <div className="flex items-center gap-1 px-2">
+        <div className="hidden sm:flex items-center gap-1 px-2">
           <div
             className="w-1 bg-emerald-500 rounded-full transition-all duration-100"
             style={{
@@ -248,7 +248,7 @@ export function MicrophoneControl() {
           onClick={handleToggle}
           disabled={isLoading || permissionState === 'denied' || permissionState === 'checking'}
           className={cn(
-            "relative h-12 w-12 flex items-center justify-center transition-all duration-200",
+            "relative h-9 w-9 sm:h-12 sm:w-12 flex items-center justify-center transition-all duration-200",
             isEnabled
               ? "bg-emerald-500/20 hover:bg-emerald-500/30"
               : "bg-gray-100 hover:bg-gray-200",
@@ -257,16 +257,16 @@ export function MicrophoneControl() {
           )}
         >
           {isLoading ? (
-            <Loader2 className="h-5 w-5 text-gray-600 animate-spin" />
+            <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 animate-spin" />
           ) : isEnabled ? (
-            <Mic className="h-5 w-5 text-emerald-600 relative z-10" />
+            <Mic className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 relative z-10" />
           ) : (
-            <MicOff className="h-5 w-5 text-red-600" />
+            <MicOff className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
           )}
         </button>
 
       {/* Divider */}
-      <div className="h-8 w-px bg-gray-300" />
+      <div className="h-6 sm:h-8 w-px bg-gray-300" />
 
       {/* Right: Dropdown Button */}
       <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -274,14 +274,14 @@ export function MicrophoneControl() {
           <button
             disabled={isLoading || permissionState !== 'granted'}
             className={cn(
-              "h-12 px-3 flex items-center gap-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm",
+              "h-9 sm:h-12 px-2 sm:px-3 flex items-center gap-1 sm:gap-2 hover:bg-gray-100 transition-colors text-gray-900 text-xs sm:text-sm",
               (isLoading || permissionState !== 'granted') && "opacity-50 cursor-not-allowed"
             )}
           >
-            <span className="max-w-[140px] truncate">
-              {selectedDevice?.label || 'Select microphone'}
+            <span className="max-w-[80px] sm:max-w-[140px] truncate">
+              {selectedDevice?.label || 'Select'}
             </span>
-            <ChevronDown className="h-4 w-4 text-gray-600" />
+            <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
           </button>
         </DropdownMenu.Trigger>
 

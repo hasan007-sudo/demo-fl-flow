@@ -112,13 +112,13 @@ function SurveyContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-6">
+    <div className="min-h-screen bg-gray-50 py-8 sm:py-12 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 md:p-8 shadow-sm">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             Session Feedback
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
             Your feedback helps us improve our service
           </p>
 
@@ -132,24 +132,27 @@ function SurveyContent() {
                 0 = Not likely at all, 10 = Extremely likely
               </p>
 
-              <div className="grid grid-cols-11 gap-2">
-                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
-                  <button
-                    key={score}
-                    type="button"
-                    onClick={() => setValue('npsScore', score)}
-                    className={`
-                      cursor-pointer px-2 py-3 rounded border text-center font-medium transition-colors
-                      ${
-                        Number(npsScore) === score
-                          ? 'bg-indigo-600 border-indigo-600 text-white'
-                          : 'bg-white border-gray-300 text-gray-700 hover:border-indigo-400'
-                      }
-                    `}
-                  >
-                    {score}
-                  </button>
-                ))}
+              {/* Mobile: Horizontal scroll, Desktop: Grid */}
+              <div className="overflow-x-auto md:overflow-x-visible -mx-2 px-2 md:mx-0 md:px-0">
+                <div className="flex md:grid md:grid-cols-11 gap-2 min-w-max md:min-w-0">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
+                    <button
+                      key={score}
+                      type="button"
+                      onClick={() => setValue('npsScore', score)}
+                      className={`
+                        cursor-pointer min-w-[44px] md:min-w-0 px-4 md:px-2 py-3 rounded border text-center font-medium transition-colors
+                        ${
+                          Number(npsScore) === score
+                            ? 'bg-indigo-600 border-indigo-600 text-white'
+                            : 'bg-white border-gray-300 text-gray-700 hover:border-indigo-400'
+                        }
+                      `}
+                    >
+                      {score}
+                    </button>
+                  ))}
+                </div>
               </div>
               {errors.npsScore && (
                 <p className="text-sm text-red-400">{errors.npsScore.message}</p>

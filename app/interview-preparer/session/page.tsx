@@ -160,7 +160,7 @@ function InterviewPreparerSessionContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <SessionView
         serverUrl={connectionDetails.serverUrl}
         roomName={connectionDetails.roomName}
