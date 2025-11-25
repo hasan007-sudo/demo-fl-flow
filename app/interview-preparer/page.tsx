@@ -190,7 +190,7 @@ export default function InterviewPreparerPage() {
                 </p>
               )}
               {existingUserData && !isCheckingUser && (
-                <p className="text-green-600 dark:text-green-400 text-sm mt-1">
+                <p className="text-indigo-600 dark:text-indigo-400 text-sm mt-1">
                   ✓ Welcome back! Your previous preferences have been loaded.
                 </p>
               )}

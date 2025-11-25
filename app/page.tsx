@@ -191,7 +191,7 @@ export default function LandingPage() {
                     }`}
                     style={{ transitionDelay: `${(bulletIndex + 3) * 100}ms` }}
                   >
-                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mr-3 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700 dark:text-gray-300">{bullet}</span>
                   </li>
                 ))}
@@ -226,7 +226,7 @@ export default function LandingPage() {
                     }`}
                     style={{ transitionDelay: `${(bulletIndex + 3) * 100}ms` }}
                   >
-                    <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mr-3 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700 dark:text-gray-300">{bullet}</span>
                   </li>
                 ))}

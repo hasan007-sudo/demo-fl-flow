@@ -268,7 +268,7 @@ export default function EnglishTutorPage() {
                   </p>
                 )}
                 {existingUserData && !isCheckingUser && (
-                  <p className="mt-1 text-xs text-green-600 dark:text-green-400">
+                  <p className="mt-1 text-xs text-indigo-600 dark:text-indigo-400">
                     ✓ Welcome back! Your previous preferences have been loaded.
                   </p>
                 )}

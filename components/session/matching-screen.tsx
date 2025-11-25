@@ -81,7 +81,7 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
                 {/* Step Label */}
                 <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-2">
                   {isCompleted ? (
-                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-400 fill-green-400" />
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-500 fill-indigo-500" />
                   ) : (
                     <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 ${
                       isInProgress
@@ -105,7 +105,7 @@ export function MatchingScreen({ onComplete }: MatchingScreenProps) {
                   <div
                     className={`h-full rounded-full transition-all ${
                       isCompleted
-                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 w-full'
+                        ? 'bg-gradient-to-r from-indigo-600 to-violet-600 w-full'
                         : isInProgress
                         ? 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-progress'
                         : 'w-0'

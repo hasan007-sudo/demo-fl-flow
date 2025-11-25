@@ -17,8 +17,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 flex justify-between items-center px-4 sm:px-6 py-4 max-w-4xl mx-auto bg-white transition-colors">
-      <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
+    <header className="sticky top-0 z-50 flex justify-between items-center px-4 sm:px-6 py-4 max-w-4xl mx-auto backdrop-blur-md bg-white/80 dark:bg-gray-950/80 shadow-sm border-b border-gray-200/50 dark:border-gray-800/50 transition-all duration-300">
+      <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group transition-transform hover:scale-105 duration-200">
         <svg
           width="28"
           height="28"
@@ -73,7 +73,7 @@ export default function Navbar() {
             className="text-indigo-300 dark:text-indigo-200"
           />
         </svg>
-        <span className="text-base sm:text-lg font-semibold text-gray-900">
+        <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors">
           Learning Forever
         </span>
       </Link>
@@ -82,15 +82,21 @@ export default function Navbar() {
       <nav className="hidden md:flex items-center space-x-6">
         <Link
           href="/english-tutor"
-          className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200 relative group"
         >
-          English Tutor
+          <span className="relative">
+            English Tutor
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-all duration-200 group-hover:w-full"></span>
+          </span>
         </Link>
         <Link
           href="/interview-preparer"
-          className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          className="text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-200 relative group"
         >
-          Interview Preparer
+          <span className="relative">
+            Interview Preparer
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-all duration-200 group-hover:w-full"></span>
+          </span>
         </Link>
       </nav>
 
@@ -112,14 +118,14 @@ export default function Navbar() {
           <nav className="flex flex-col space-y-4 mt-8">
             <Link
               href="/english-tutor"
-              className="text-base text-gray-600 hover:text-gray-900 transition-colors py-2 px-2 rounded-md hover:bg-gray-100"
+              className="text-base text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all duration-200 py-2 px-3 rounded-md"
               onClick={() => setOpen(false)}
             >
               English Tutor
             </Link>
             <Link
               href="/interview-preparer"
-              className="text-base text-gray-600 hover:text-gray-900 transition-colors py-2 px-2 rounded-md hover:bg-gray-100"
+              className="text-base text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all duration-200 py-2 px-3 rounded-md"
               onClick={() => setOpen(false)}
             >
               Interview Preparer
